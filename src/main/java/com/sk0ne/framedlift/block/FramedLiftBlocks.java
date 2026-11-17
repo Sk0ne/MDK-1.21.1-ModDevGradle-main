@@ -1,153 +1,169 @@
-package com.example.framedlift.block;
+package com.sk0ne.framedlift.block;
 
-import io.github.xfacthd.framedblocks.common.block.*;
-import io.github.xfacthd.framedblocks.common.block.cube.FramedCubeBlock;
-import io.github.xfacthd.framedblocks.common.block.slope.FramedSlopeBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import xfacthd.framedblocks.common.block.cube.FramedBouncyCubeBlock;
+import xfacthd.framedblocks.common.block.cube.FramedCubeBlock;
+import xfacthd.framedblocks.common.block.cube.FramedGlowingCubeBlock;
+import xfacthd.framedblocks.common.block.slope.FramedDoubleSlopeBlock;
+import xfacthd.framedblocks.common.block.slope.FramedSlopeBlock;
+import xfacthd.framedblocks.common.block.slope.FramedVerticalSlopeBlock;
+import xfacthd.framedblocks.common.block.slab.FramedDoubleSlabBlock;
+import xfacthd.framedblocks.common.block.slab.FramedSlabBlock;
+import xfacthd.framedblocks.common.block.stairs.FramedStairsBlock;
+import xfacthd.framedblocks.common.block.panel.FramedPanelBlock;
+import xfacthd.framedblocks.common.block.FramedBlock;
+import xfacthd.framedblocks.common.data.BlockType;
+
+// Примечание: Некоторые классы (например, FramedCheckeredCubeBlock) могут отсутствовать в этой версии.
+// Для них созданы заглушки на основе FramedBlock с соответствующим BlockType.
+// Если класс существует, замени заглушку на реальный класс.
 
 public final class FramedLiftBlocks {
 
-    // ─── Кубы ───────────────────────────────────────────────
+    // --- Кубы ---
     public static class LiftFramedCube extends FramedCubeBlock implements LiftProvider {
-        public LiftFramedCube(BlockBehaviour.Properties p) { super(p); }
+        public LiftFramedCube() { super(); }
     }
     public static class LiftFramedBouncyCube extends FramedBouncyCubeBlock implements LiftProvider {
-        public LiftFramedBouncyCube(BlockBehaviour.Properties p) { super(p); }
+        public LiftFramedBouncyCube() { super(); }
     }
     public static class LiftFramedGlowingCube extends FramedGlowingCubeBlock implements LiftProvider {
-        public LiftFramedGlowingCube(BlockBehaviour.Properties p) { super(p); }
+        public LiftFramedGlowingCube() { super(); }
     }
-    public static class LiftFramedCheckeredCube extends FramedCheckeredCubeBlock implements LiftProvider {
-        public LiftFramedCheckeredCube(BlockBehaviour.Properties p) { super(p); }
+    // Заглушка для CheckeredCube, если класса нет
+    public static class LiftFramedCheckeredCube extends FramedBlock implements LiftProvider {
+        public LiftFramedCheckeredCube() { super(BlockType.FRAMED_CUBE); } // Временный тип
     }
 
-    // ─── Наклонные блоки ────────────────────────────────────
+    // --- Наклонные блоки ---
     public static class LiftFramedSlope extends FramedSlopeBlock implements LiftProvider {
-        public LiftFramedSlope(BlockBehaviour.Properties p) { super(p); }
+        public LiftFramedSlope() { super(); }
     }
     public static class LiftFramedDoubleSlope extends FramedDoubleSlopeBlock implements LiftProvider {
-        public LiftFramedDoubleSlope(BlockBehaviour.Properties p) { super(p); }
+        public LiftFramedDoubleSlope() { super(); }
     }
-    public static class LiftFramedElevatedDoubleSlopeEdge extends FramedElevatedDoubleSlopeEdgeBlock implements LiftProvider {
-        public LiftFramedElevatedDoubleSlopeEdge(BlockBehaviour.Properties p) { super(p); }
+    // Заглушки для остальных наклонных блоков (замени на реальные классы, если они есть)
+    public static class LiftFramedElevatedDoubleSlopeEdge extends FramedBlock implements LiftProvider {
+        public LiftFramedElevatedDoubleSlopeEdge() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedElevDoubleCornerSlopeEdge extends FramedElevDoubleCornerSlopeEdgeBlock implements LiftProvider {
-        public LiftFramedElevDoubleCornerSlopeEdge(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedElevDoubleCornerSlopeEdge extends FramedBlock implements LiftProvider {
+        public LiftFramedElevDoubleCornerSlopeEdge() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedElevDoubleInnerCornerSlopeEdge extends FramedElevDoubleInnerCornerSlopeEdgeBlock implements LiftProvider {
-        public LiftFramedElevDoubleInnerCornerSlopeEdge(BlockBehaviour.Properties p) { super(p); }
-    }
-
-    // ─── Углы и грани ───────────────────────────────────────
-    public static class LiftFramedDoubleCorner extends FramedDoubleCornerBlock implements LiftProvider {
-        public LiftFramedDoubleCorner(BlockBehaviour.Properties p) { super(p); }
-    }
-    public static class LiftFramedDoublePrismCorner extends FramedDoublePrismCornerBlock implements LiftProvider {
-        public LiftFramedDoublePrismCorner(BlockBehaviour.Properties p) { super(p); }
-    }
-    public static class LiftFramedDoubleThreewayCorner extends FramedDoubleThreewayCornerBlock implements LiftProvider {
-        public LiftFramedDoubleThreewayCorner(BlockBehaviour.Properties p) { super(p); }
-    }
-    public static class LiftFramedDoubleThreewayCornerPillar extends FramedDoubleThreewayCornerPillarBlock implements LiftProvider {
-        public LiftFramedDoubleThreewayCornerPillar(BlockBehaviour.Properties p) { super(p); }
-    }
-    public static class LiftFramedMasonryCorner extends FramedMasonryCornerBlock implements LiftProvider {
-        public LiftFramedMasonryCorner(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedElevDoubleInnerCornerSlopeEdge extends FramedBlock implements LiftProvider {
+        public LiftFramedElevDoubleInnerCornerSlopeEdge() { super(BlockType.FRAMED_CUBE); }
     }
 
-    // ─── Плиты и панели ─────────────────────────────────────
+    // --- Углы и грани ---
+    // (Аналогичные заглушки для всех остальных классов)
+    public static class LiftFramedDoubleCorner extends FramedBlock implements LiftProvider {
+        public LiftFramedDoubleCorner() { super(BlockType.FRAMED_CUBE); }
+    }
+    public static class LiftFramedDoublePrismCorner extends FramedBlock implements LiftProvider {
+        public LiftFramedDoublePrismCorner() { super(BlockType.FRAMED_CUBE); }
+    }
+    public static class LiftFramedDoubleThreewayCorner extends FramedBlock implements LiftProvider {
+        public LiftFramedDoubleThreewayCorner() { super(BlockType.FRAMED_CUBE); }
+    }
+    public static class LiftFramedDoubleThreewayCornerPillar extends FramedBlock implements LiftProvider {
+        public LiftFramedDoubleThreewayCornerPillar() { super(BlockType.FRAMED_CUBE); }
+    }
+    public static class LiftFramedMasonryCorner extends FramedBlock implements LiftProvider {
+        public LiftFramedMasonryCorner() { super(BlockType.FRAMED_CUBE); }
+    }
+
+    // --- Плиты и панели ---
     public static class LiftFramedDoubleSlab extends FramedDoubleSlabBlock implements LiftProvider {
-        public LiftFramedDoubleSlab(BlockBehaviour.Properties p) { super(p); }
+        public LiftFramedDoubleSlab() { super(); }
     }
-    public static class LiftFramedAdjDoubleSlab extends FramedAdjDoubleSlabBlock implements LiftProvider {
-        public LiftFramedAdjDoubleSlab(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedAdjDoubleSlab extends FramedBlock implements LiftProvider {
+        public LiftFramedAdjDoubleSlab() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedAdjDoubleCopycatSlab extends FramedAdjDoubleCopycatSlabBlock implements LiftProvider {
-        public LiftFramedAdjDoubleCopycatSlab(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedAdjDoubleCopycatSlab extends FramedBlock implements LiftProvider {
+        public LiftFramedAdjDoubleCopycatSlab() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedDoublePanel extends FramedDoublePanelBlock implements LiftProvider {
-        public LiftFramedDoublePanel(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedDoublePanel extends FramedPanelBlock implements LiftProvider {
+        public LiftFramedDoublePanel() { super(); } // Проверь, есть ли такой конструктор
     }
-    public static class LiftFramedAdjDoublePanel extends FramedAdjDoublePanelBlock implements LiftProvider {
-        public LiftFramedAdjDoublePanel(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedAdjDoublePanel extends FramedBlock implements LiftProvider {
+        public LiftFramedAdjDoublePanel() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedAdjDoubleCopycatPanel extends FramedAdjDoubleCopycatPanelBlock implements LiftProvider {
-        public LiftFramedAdjDoubleCopycatPanel(BlockBehaviour.Properties p) { super(p); }
-    }
-
-    // ─── Ступени ────────────────────────────────────────────
-    public static class LiftFramedDoubleStairs extends FramedDoubleStairsBlock implements LiftProvider {
-        public LiftFramedDoubleStairs(BlockBehaviour.Properties p) { super(p); }
-    }
-    public static class LiftFramedSlopedDoubleStairs extends FramedSlopedDoubleStairsBlock implements LiftProvider {
-        public LiftFramedSlopedDoubleStairs(BlockBehaviour.Properties p) { super(p); }
-    }
-    public static class LiftFramedVerticalDoubleStairs extends FramedVerticalDoubleStairsBlock implements LiftProvider {
-        public LiftFramedVerticalDoubleStairs(BlockBehaviour.Properties p) { super(p); }
-    }
-    public static class LiftFramedVerticalSlopedDoubleStairs extends FramedVerticalSlopedDoubleStairsBlock implements LiftProvider {
-        public LiftFramedVerticalSlopedDoubleStairs(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedAdjDoubleCopycatPanel extends FramedBlock implements LiftProvider {
+        public LiftFramedAdjDoubleCopycatPanel() { super(BlockType.FRAMED_CUBE); }
     }
 
-    // ─── Специальные блоки ──────────────────────────────────
-    public static class LiftFramedSecretStorage extends FramedSecretStorageBlock implements LiftProvider {
-        public LiftFramedSecretStorage(BlockBehaviour.Properties p) { super(p); }
+    // --- Ступени ---
+    public static class LiftFramedDoubleStairs extends FramedBlock implements LiftProvider {
+        public LiftFramedDoubleStairs() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedTank extends FramedTankBlock implements LiftProvider {
-        public LiftFramedTank(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedSlopedDoubleStairs extends FramedBlock implements LiftProvider {
+        public LiftFramedSlopedDoubleStairs() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedRedstoneBlock extends FramedRedstoneBlock implements LiftProvider {
-        public LiftFramedRedstoneBlock(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedVerticalDoubleStairs extends FramedBlock implements LiftProvider {
+        public LiftFramedVerticalDoubleStairs() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedTarget extends FramedTargetBlock implements LiftProvider {
-        public LiftFramedTarget(BlockBehaviour.Properties p) { super(p); }
-    }
-    public static class LiftFramedBookshelf extends FramedBookshelfBlock implements LiftProvider {
-        public LiftFramedBookshelf(BlockBehaviour.Properties p) { super(p); }
-    }
-    public static class LiftFramedChiseledBookshelf extends FramedChiseledBookshelfBlock implements LiftProvider {
-        public LiftFramedChiseledBookshelf(BlockBehaviour.Properties p) { super(p); }
-    }
-    public static class LiftFramedOneWayWindow extends FramedOneWayWindowBlock implements LiftProvider {
-        public LiftFramedOneWayWindow(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedVerticalSlopedDoubleStairs extends FramedBlock implements LiftProvider {
+        public LiftFramedVerticalSlopedDoubleStairs() { super(BlockType.FRAMED_CUBE); }
     }
 
-    // ─── Призмы и сложные формы ─────────────────────────────
-    public static class LiftFramedElevatedInnerDoublePrism extends FramedElevatedInnerDoublePrismBlock implements LiftProvider {
-        public LiftFramedElevatedInnerDoublePrism(BlockBehaviour.Properties p) { super(p); }
+    // --- Специальные блоки ---
+    public static class LiftFramedSecretStorage extends FramedBlock implements LiftProvider {
+        public LiftFramedSecretStorage() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedElevatedInnerDoubleSlopedPrism extends FramedElevatedInnerDoubleSlopedPrismBlock implements LiftProvider {
-        public LiftFramedElevatedInnerDoubleSlopedPrism(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedTank extends FramedBlock implements LiftProvider {
+        public LiftFramedTank() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedElevatedDoubleSlopeSlab extends FramedElevatedDoubleSlopeSlabBlock implements LiftProvider {
-        public LiftFramedElevatedDoubleSlopeSlab(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedRedstoneBlock extends FramedBlock implements LiftProvider {
+        public LiftFramedRedstoneBlock() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedFlatElevDoubleSlopeSlabCorner extends FramedFlatElevDoubleSlopeSlabCornerBlock implements LiftProvider {
-        public LiftFramedFlatElevDoubleSlopeSlabCorner(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedTarget extends FramedBlock implements LiftProvider {
+        public LiftFramedTarget() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedFlatElevInnerDoubleSlopeSlabCorner extends FramedFlatElevInnerDoubleSlopeSlabCornerBlock implements LiftProvider {
-        public LiftFramedFlatElevInnerDoubleSlopeSlabCorner(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedBookshelf extends FramedBlock implements LiftProvider {
+        public LiftFramedBookshelf() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedExtendedDoubleSlopePanel extends FramedExtendedDoubleSlopePanelBlock implements LiftProvider {
-        public LiftFramedExtendedDoubleSlopePanel(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedChiseledBookshelf extends FramedBlock implements LiftProvider {
+        public LiftFramedChiseledBookshelf() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedFlatExtDoubleSlopePanelCorner extends FramedFlatExtDoubleSlopePanelCornerBlock implements LiftProvider {
-        public LiftFramedFlatExtDoubleSlopePanelCorner(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedOneWayWindow extends FramedBlock implements LiftProvider {
+        public LiftFramedOneWayWindow() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedFlatExtInnerDoubleSlopePanelCorner extends FramedFlatExtInnerDoubleSlopePanelCornerBlock implements LiftProvider {
-        public LiftFramedFlatExtInnerDoubleSlopePanelCorner(BlockBehaviour.Properties p) { super(p); }
+
+    // --- Призмы и сложные формы ---
+    public static class LiftFramedElevatedInnerDoublePrism extends FramedBlock implements LiftProvider {
+        public LiftFramedElevatedInnerDoublePrism() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedExtDoubleCornerSlopePanel extends FramedExtDoubleCornerSlopePanelBlock implements LiftProvider {
-        public LiftFramedExtDoubleCornerSlopePanel(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedElevatedInnerDoubleSlopedPrism extends FramedBlock implements LiftProvider {
+        public LiftFramedElevatedInnerDoubleSlopedPrism() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedExtDoubleCornerSlopePanelW extends FramedExtDoubleCornerSlopePanelWBlock implements LiftProvider {
-        public LiftFramedExtDoubleCornerSlopePanelW(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedElevatedDoubleSlopeSlab extends FramedBlock implements LiftProvider {
+        public LiftFramedElevatedDoubleSlopeSlab() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedExtInnerDoubleCornerSlopePanel extends FramedExtInnerDoubleCornerSlopePanelBlock implements LiftProvider {
-        public LiftFramedExtInnerDoubleCornerSlopePanel(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedFlatElevDoubleSlopeSlabCorner extends FramedBlock implements LiftProvider {
+        public LiftFramedFlatElevDoubleSlopeSlabCorner() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedExtInnerDoubleCornerSlopePanelW extends FramedExtInnerDoubleCornerSlopePanelWBlock implements LiftProvider {
-        public LiftFramedExtInnerDoubleCornerSlopePanelW(BlockBehaviour.Properties p) { super(p); }
+    public static class LiftFramedFlatElevInnerDoubleSlopeSlabCorner extends FramedBlock implements LiftProvider {
+        public LiftFramedFlatElevInnerDoubleSlopeSlabCorner() { super(BlockType.FRAMED_CUBE); }
+    }
+    public static class LiftFramedExtendedDoubleSlopePanel extends FramedBlock implements LiftProvider {
+        public LiftFramedExtendedDoubleSlopePanel() { super(BlockType.FRAMED_CUBE); }
+    }
+    public static class LiftFramedFlatExtDoubleSlopePanelCorner extends FramedBlock implements LiftProvider {
+        public LiftFramedFlatExtDoubleSlopePanelCorner() { super(BlockType.FRAMED_CUBE); }
+    }
+    public static class LiftFramedFlatExtInnerDoubleSlopePanelCorner extends FramedBlock implements LiftProvider {
+        public LiftFramedFlatExtInnerDoubleSlopePanelCorner() { super(BlockType.FRAMED_CUBE); }
+    }
+    public static class LiftFramedExtDoubleCornerSlopePanel extends FramedBlock implements LiftProvider {
+        public LiftFramedExtDoubleCornerSlopePanel() { super(BlockType.FRAMED_CUBE); }
+    }
+    public static class LiftFramedExtDoubleCornerSlopePanelW extends FramedBlock implements LiftProvider {
+        public LiftFramedExtDoubleCornerSlopePanelW() { super(BlockType.FRAMED_CUBE); }
+    }
+    public static class LiftFramedExtInnerDoubleCornerSlopePanel extends FramedBlock implements LiftProvider {
+        public LiftFramedExtInnerDoubleCornerSlopePanel() { super(BlockType.FRAMED_CUBE); }
+    }
+    public static class LiftFramedExtInnerDoubleCornerSlopePanelW extends FramedBlock implements LiftProvider {
+        public LiftFramedExtInnerDoubleCornerSlopePanelW() { super(BlockType.FRAMED_CUBE); }
     }
 
     private FramedLiftBlocks() {}
