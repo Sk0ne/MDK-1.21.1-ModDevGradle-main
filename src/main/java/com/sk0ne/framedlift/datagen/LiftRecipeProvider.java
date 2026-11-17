@@ -90,7 +90,8 @@ public class LiftRecipeProvider extends RecipeProvider {
                     .requires(original)
                     .requires(sail)
                     .unlockedBy("has_" + pair.framedId(), has(original))
-                    .save(output, FramedLiftMod.MOD_ID, "lift_" + pair.framedId());
+                    .save(output, ResourceLocation.fromNamespaceAndPath(
+                            FramedLiftMod.MOD_ID, "lift_" + pair.framedId()));
         }
     }
 
