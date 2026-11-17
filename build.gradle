@@ -10,64 +10,32 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
-// --- РЕПОЗИТОРИИ ---
 repositories {
-    // Основное зеркало для NeoForge (обход блокировки)
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = "NeoForged Mirror"
-                url = "https://neoforged.forgecdn.net/releases"
-            }
-        }
-        filter {
-            includeGroup "net.neoforged"
-        }
+    // Curse Maven — для FramedBlocks и Create (если нужно)
+    maven {
+        name = "Curse Maven"
+        url = "https://cursemaven.com"
     }
-
-    // FramedBlocks (через Curse Maven)
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = "Curse Maven"
-                url = "https://cursemaven.com"
-            }
-        }
-        filter {
-            includeGroup "curse.maven"
-        }
-    }
-
-    // Create и его зависимости
+    // Create, Ponder, Flywheel
     maven {
         name = "Create Maven"
         url = "https://maven.createmod.net"
     }
+    // Registrate
     maven {
         name = "Registrate Snapshots"
         url = "https://maven.ithundxr.dev/snapshots"
     }
-
     // Sable (Create: Aeronautics)
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = "RyanHCode Maven"
-                url = "https://maven.ryanhcode.dev/releases"
-            }
-        }
-        filter {
-            includeGroup "dev.ryanhcode.sable"
-            includeGroup "dev.ryanhcode.sable-companion"
-        }
+    maven {
+        name = "RyanHCode Maven"
+        url = "https://maven.ryanhcode.dev/releases"
     }
-
     // Стандартные репозитории
     mavenCentral()
     maven { url = "https://libraries.minecraft.net/" }
 }
 
-// --- НАСТРОЙКА NEOFORGE ---
 neoForge {
     version = project.neo_version
 
@@ -92,13 +60,11 @@ neoForge {
     }
 }
 
-// --- ЗАВИСИМОСТИ ---
 dependencies {
-    // FramedBlocks (NeoForge 1.21.1)
-    // Координаты взяты с CurseForge: https://www.curseforge.com/minecraft/mc-mods/framedblocks/files/6872949
+    // FramedBlocks (NeoForge 1.21.1) — координаты с CurseForge[reference:0]
     implementation "curse.maven:framedblocks-441647:6872949"
 
-    // Create (NeoForge 1.21.1) и его обязательные транзитивные зависимости
+    // Create (NeoForge 1.21.1) — из официального Maven Create[reference:1]
     implementation("com.simibubi.create:create-${project.minecraft_version}:${project.create_version}:slim") {
         transitive = false
     }
@@ -107,7 +73,6 @@ dependencies {
     runtimeOnly "dev.engine-room.flywheel:flywheel-neoforge-${project.minecraft_version}:1.0.6"
     implementation "com.tterrag.registrate:Registrate:MC1.21-1.3.0+67"
 
-    // Sable (Create: Aeronautics) — аэродинамический движок
-    // Координаты: https://maven.ryanhcode.dev/releases/dev/ryanhcode/sable/sable-common-1.21.1/
+    // Sable (Create: Aeronautics) — из официального Maven Sable[reference:2]
     implementation "dev.ryanhcode.sable:sable-common-${project.minecraft_version}:${project.sable_version}"
 }
