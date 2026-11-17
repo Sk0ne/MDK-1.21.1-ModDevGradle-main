@@ -5,18 +5,13 @@ import xfacthd.framedblocks.common.block.cube.FramedBouncyCubeBlock;
 import xfacthd.framedblocks.common.block.cube.FramedCubeBlock;
 import xfacthd.framedblocks.common.block.cube.FramedGlowingCubeBlock;
 import xfacthd.framedblocks.common.block.slope.FramedDoubleSlopeBlock;
-import xfacthd.framedblocks.common.block.slope.FramedSlopeBlock;
-import xfacthd.framedblocks.common.block.slope.FramedVerticalSlopeBlock;
 import xfacthd.framedblocks.common.block.slab.FramedDoubleSlabBlock;
-import xfacthd.framedblocks.common.block.slab.FramedSlabBlock;
-import xfacthd.framedblocks.common.block.stairs.FramedStairsBlock;
-import xfacthd.framedblocks.common.block.panel.FramedPanelBlock;
 import xfacthd.framedblocks.common.block.FramedBlock;
 import xfacthd.framedblocks.common.data.BlockType;
 
-// Примечание: Некоторые классы (например, FramedCheckeredCubeBlock) могут отсутствовать в этой версии.
-// Для них созданы заглушки на основе FramedBlock с соответствующим BlockType.
-// Если класс существует, замени заглушку на реальный класс.
+// ВАЖНО: классы с пометкой "заглушка" наследуют FramedBlock с BlockType.FRAMED_CUBE —
+// это даёт им форму и поведение полного куба, а не реальную форму (ступени, панель, призма).
+// По мере появления реальных классов FramedBlocks заменяйте super-тип и конструктор.
 
 public final class FramedLiftBlocks {
 
@@ -30,19 +25,16 @@ public final class FramedLiftBlocks {
     public static class LiftFramedGlowingCube extends FramedGlowingCubeBlock implements LiftProvider {
         public LiftFramedGlowingCube() { super(); }
     }
-    // Заглушка для CheckeredCube, если класса нет
+    // Заглушка: реального FramedCheckeredCubeBlock в этой версии нет
     public static class LiftFramedCheckeredCube extends FramedBlock implements LiftProvider {
-        public LiftFramedCheckeredCube() { super(BlockType.FRAMED_CUBE); } // Временный тип
+        public LiftFramedCheckeredCube() { super(BlockType.FRAMED_CUBE); }
     }
 
     // --- Наклонные блоки ---
-    public static class LiftFramedSlope extends FramedSlopeBlock implements LiftProvider {
-        public LiftFramedSlope() { super(); }
-    }
     public static class LiftFramedDoubleSlope extends FramedDoubleSlopeBlock implements LiftProvider {
         public LiftFramedDoubleSlope() { super(); }
     }
-    // Заглушки для остальных наклонных блоков (замени на реальные классы, если они есть)
+    // Заглушки
     public static class LiftFramedElevatedDoubleSlopeEdge extends FramedBlock implements LiftProvider {
         public LiftFramedElevatedDoubleSlopeEdge() { super(BlockType.FRAMED_CUBE); }
     }
@@ -53,8 +45,7 @@ public final class FramedLiftBlocks {
         public LiftFramedElevDoubleInnerCornerSlopeEdge() { super(BlockType.FRAMED_CUBE); }
     }
 
-    // --- Углы и грани ---
-    // (Аналогичные заглушки для всех остальных классов)
+    // --- Углы и грани (заглушки) ---
     public static class LiftFramedDoubleCorner extends FramedBlock implements LiftProvider {
         public LiftFramedDoubleCorner() { super(BlockType.FRAMED_CUBE); }
     }
@@ -75,14 +66,15 @@ public final class FramedLiftBlocks {
     public static class LiftFramedDoubleSlab extends FramedDoubleSlabBlock implements LiftProvider {
         public LiftFramedDoubleSlab() { super(); }
     }
+    // Заглушки (копи-кэт-версии пока неотличимы от обычных — это известное ограничение)
     public static class LiftFramedAdjDoubleSlab extends FramedBlock implements LiftProvider {
         public LiftFramedAdjDoubleSlab() { super(BlockType.FRAMED_CUBE); }
     }
     public static class LiftFramedAdjDoubleCopycatSlab extends FramedBlock implements LiftProvider {
         public LiftFramedAdjDoubleCopycatSlab() { super(BlockType.FRAMED_CUBE); }
     }
-    public static class LiftFramedDoublePanel extends FramedPanelBlock implements LiftProvider {
-        public LiftFramedDoublePanel() { super(); } // Проверь, есть ли такой конструктор
+    public static class LiftFramedDoublePanel extends FramedBlock implements LiftProvider {
+        public LiftFramedDoublePanel() { super(BlockType.FRAMED_CUBE); }
     }
     public static class LiftFramedAdjDoublePanel extends FramedBlock implements LiftProvider {
         public LiftFramedAdjDoublePanel() { super(BlockType.FRAMED_CUBE); }
@@ -91,7 +83,7 @@ public final class FramedLiftBlocks {
         public LiftFramedAdjDoubleCopycatPanel() { super(BlockType.FRAMED_CUBE); }
     }
 
-    // --- Ступени ---
+    // --- Ступени (заглушки) ---
     public static class LiftFramedDoubleStairs extends FramedBlock implements LiftProvider {
         public LiftFramedDoubleStairs() { super(BlockType.FRAMED_CUBE); }
     }
@@ -105,7 +97,7 @@ public final class FramedLiftBlocks {
         public LiftFramedVerticalSlopedDoubleStairs() { super(BlockType.FRAMED_CUBE); }
     }
 
-    // --- Специальные блоки ---
+    // --- Специальные блоки (заглушки) ---
     public static class LiftFramedSecretStorage extends FramedBlock implements LiftProvider {
         public LiftFramedSecretStorage() { super(BlockType.FRAMED_CUBE); }
     }
@@ -128,7 +120,7 @@ public final class FramedLiftBlocks {
         public LiftFramedOneWayWindow() { super(BlockType.FRAMED_CUBE); }
     }
 
-    // --- Призмы и сложные формы ---
+    // --- Призмы и сложные формы (заглушки) ---
     public static class LiftFramedElevatedInnerDoublePrism extends FramedBlock implements LiftProvider {
         public LiftFramedElevatedInnerDoublePrism() { super(BlockType.FRAMED_CUBE); }
     }

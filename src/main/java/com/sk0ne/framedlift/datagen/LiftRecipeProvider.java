@@ -1,9 +1,11 @@
-package com.example.framedlift.datagen;
+package com.sk0ne.framedlift.datagen;
 
-import com.example.framedlift.FramedLiftMod;
-import com.example.framedlift.ModItems;
+import com.sk0ne.framedlift.FramedLiftMod;
+import com.sk0ne.framedlift.ModItems;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -11,11 +13,11 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class LiftRecipeProvider extends RecipeProvider {
@@ -65,31 +67,35 @@ public class LiftRecipeProvider extends RecipeProvider {
             new Pair("framed_one_way_window", ModItems.LIFT_FRAMED_ONE_WAY_WINDOW)
     );
 
+    private final HolderLookup.Provider registries;
+
     public LiftRecipeProvider(HolderLookup.Provider registries, RecipeOutput output) {
         super(registries, output);
+        this.registries = registries;
     }
 
     @Override
     protected void buildRecipes() {
-        final Item sail = BuiltInRegistries.ITEM.get(
-                ResourceLocation.fromNamespaceAndPath("create", "white_sail")
-        );
-        if (sail == null) {
+        HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
+
+        Optional<Holder.Reference<Item>> sailHolder =
+                items.get(ResourceLocation.fromNamespaceAndPath("create", "white_sail"));
+        if (sailHolder.isEmpty()) {
             FramedLiftMod.LOGGER.error("Не найден предмет create:white_sail. Рецепты не будут сгенерированы.");
             return;
         }
+        final Item sail = sailHolder.get().value();
 
         for (Pair pair : PAIRS) {
-            final Item original = BuiltInRegistries.ITEM.get(
-                    ResourceLocation.fromNamespaceAndPath("framedblocks", pair.framedId())
-            );
-            if (original == null) {
+            Optional<Holder.Reference<Item>> originalHolder =
+                    items.get(ResourceLocation.fromNamespaceAndPath("framedblocks", pair.framedId()));
+            if (originalHolder.isEmpty()) {
                 FramedLiftMod.LOGGER.warn("Не найден предмет framedblocks:{}. Пропуск.", pair.framedId());
                 continue;
             }
+            final Item original = originalHolder.get().value();
 
-            final Item result = pair.result().get();
-            ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, result)
+            ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, pair.result().get())
                     .requires(original)
                     .requires(sail)
                     .unlockedBy("has_" + pair.framedId(), has(original))

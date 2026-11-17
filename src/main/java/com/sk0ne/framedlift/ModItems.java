@@ -1,4 +1,5 @@
-package com.example.framedlift;
+package com.sk0ne.framedlift;
+
 
 import net.minecraft.world.item.BlockItem;
 import net.neoforged.neoforge.registries.DeferredItem;
