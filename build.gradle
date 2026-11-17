@@ -1,0 +1,50 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.138'
+}
+
+version = '1.0.0'
+group = 'com.sk0ne.framedlift'
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+neoForge {
+    version = "21.1.0"
+
+    runs {
+        client {
+            client()
+            gameDirectory = project.file('run')
+        }
+        server {
+            server()
+        }
+        data {
+            data()
+            gameDirectory = project.file('run-data')
+        }
+    }
+
+    mods {
+        framedlift {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+dependencies {
+    // FramedBlocks (NeoForge 1.21.1)
+    implementation "io.github.xfacthd:framedblocks:10.4.0"
+
+    // Create (NeoForge 1.21.1)
+    implementation "com.simibubi.create:create-1.21.1:6.0.6-183"
+
+    // Sable / Simulated Project
+    implementation "dev.ryanhcode.sable:sable-neoforge-1.21.1:1.0.0"
+
+    // Транзитивные зависимости Create
+    implementation "net.createmod.catnip:Catnip-1.21.1:1.0.0"
+    implementation "com.tterrag.registrate:Registrate-MC1.21-1.3.0"
+}

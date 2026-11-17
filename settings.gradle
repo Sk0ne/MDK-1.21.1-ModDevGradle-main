@@ -1,0 +1,34 @@
+pluginManagement {
+    repositories {
+        maven {
+            name = "NeoForged Mirror (Plugins)"
+            url = 'https://neoforged.forgecdn.net/releases'
+        }
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+}
+
+dependencyResolutionManagement {
+    repositories {
+        maven {
+            name = "NeoForged Mirror (Releases)"
+            url = "https://neoforged.forgecdn.net/releases"
+        }
+        maven {
+            name = "NeoForged Mirror (Mojang Meta)"
+            url = "https://neoforged.forgecdn.net/mojang-meta"
+        }
+        maven {
+            name = "Mojang Libraries"
+            url = "https://libraries.minecraft.net/"
+        }
+        maven {
+            name = "Maven Central"
+            url = "https://repo1.maven.org/maven2/"
+        }
+    }
+}
