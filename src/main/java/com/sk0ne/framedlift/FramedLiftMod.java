@@ -1,6 +1,7 @@
-package com.example.framedlift;
+package com.sk0ne.framedlift;
 
-import com.example.framedlift.datagen.LiftRecipeProvider;
+import com.sk0ne.framedlift.datagen.LiftRecipeProvider;
+import net.minecraft.data.DataProvider;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -13,21 +14,17 @@ public class FramedLiftMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public FramedLiftMod(IEventBus modEventBus) {
-        // Регистрация реестров
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
-
-        // Подключение datagen только на серверной стороне
         modEventBus.addListener(this::gatherData);
+        LOGGER.info("FramedLift loaded");
     }
 
     private void gatherData(GatherDataEvent event) {
         event.getGenerator().addProvider(
                 event.includeServer(),
-                new LiftRecipeProvider.Runner(
-                        event.getGenerator().getPackOutput(),
-                        event.getLookupProvider()
-                )
+                (DataProvider.Factory<LiftRecipeProvider>) output ->
+                        new LiftRecipeProvider(output, event.getLookupProvider())
         );
     }
 }
