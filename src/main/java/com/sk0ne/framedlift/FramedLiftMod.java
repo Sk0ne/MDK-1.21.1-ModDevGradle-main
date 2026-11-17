@@ -1,11 +1,10 @@
 package com.sk0ne.framedlift;
 
 import com.sk0ne.framedlift.datagen.LiftRecipeProvider;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.event.RegisterCommandsEvent; // удалите, если не нужен — добавлен не был, оставляю чисто
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.slf4j.Logger;
-
 import com.mojang.logging.LogUtils;
 
 @Mod(FramedLiftMod.MOD_ID)
@@ -13,7 +12,7 @@ public class FramedLiftMod {
     public static final String MOD_ID = "framedlift";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public FramedLiftMod(net.neoforged.bus.api.IEventBus modEventBus) {
+    public FramedLiftMod(IEventBus modEventBus) {
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         modEventBus.addListener(this::gatherData);
@@ -23,7 +22,7 @@ public class FramedLiftMod {
     private void gatherData(GatherDataEvent event) {
         event.getGenerator().addProvider(
                 event.includeServer(),
-                new LiftRecipeProvider.Runner(
+                new LiftRecipeProvider(
                         event.getGenerator().getPackOutput(),
                         event.getLookupProvider()
                 )
