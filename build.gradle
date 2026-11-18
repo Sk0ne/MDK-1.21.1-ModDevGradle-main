@@ -1,0 +1,91 @@
+plugins {
+    id 'net.neoforged.moddev' version '1.0.17'
+}
+
+version = project.mod_version
+group = project.mod_group_id
+
+base {
+    archivesName = project.mod_id
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+
+neoForge {
+    version = project.neo_version
+
+    runs {
+        client {
+            client()
+        }
+        data {
+            data()
+            gameDirectory = project.file('run-data')
+            // --server: только серверные данные; --mod: запускать провайдеры
+            // только нашего мода, чтобы ванильный ModelProvider не потребовал
+            // blockstates для блоков FramedBlocks
+            programArguments.addAll '--mod', 'framedlift', '--server', '--output',
+                    file('src/generated/resources/').absolutePath
+        }
+    }
+
+    mods {
+        framedlift {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+repositories {
+    maven {
+        name = "NeoForged"
+        url = "https://maven.neoforged.net/releases"
+    }
+    // FramedBlocks — публикуется только на CurseForge, cursemaven — официальный резолвер к нему
+    maven {
+        name = "Curse Maven"
+        url = "https://cursemaven.com"
+    }
+    // Sable (Create: Aeronautics) — официальный maven автора
+    maven {
+        name = "RyanHCode"
+        url = "https://maven.ryanhcode.dev/releases"
+    }
+    mavenCentral()
+}
+
+dependencies {
+    // implementation, а не compileOnly: классы FramedBlocks нужны и в рантайме
+    // datagen (наш блок наследует FramedCubeBlock и регистрируется при загрузке)
+    implementation "curse.maven:framedblocks-441647:6872949"
+
+    // API-модуль Sable: интерфейс BlockSubLevelLiftProvider. Не мод (без mods.toml),
+    // FML его как мод не грузит; transitive=false отсекает Veil/companion и прочее
+    implementation("dev.ryanhcode.sable:sable-common-1.21.1:2.0.6") { transitive = false }
+
+    // Для локального runClient (реальная физика) раскомментируй, положив jar'ы в libs/:
+    // localRuntime files('libs/sable-neoforge-1.21.1-2.0.6.jar')
+    // localRuntime files('libs/create-1.21.1-6.0.10.jar') // и его зависимости по факту
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+processResources {
+    def props = [mod_version: project.mod_version]
+    inputs.properties props
+
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand props
+    }
+}
+
+sourceSets.main.resources {
+    srcDir 'src/main/templates'
+    srcDir 'src/generated/resources'
+}
