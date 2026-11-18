@@ -1,5 +1,6 @@
 package com.sk0ne.framedlift.datagen;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sk0ne.framedlift.FramedLiftMod;
 import com.sk0ne.framedlift.ModBlocks;

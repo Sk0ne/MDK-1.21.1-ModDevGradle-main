@@ -3,7 +3,7 @@ package com.sk0ne.framedlift.blockentity;
 import com.sk0ne.framedlift.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
-import xfacthd.framedblocks.api.blockentity.FramedBlockEntity;
+import xfacthd.framedblocks.api.block.blockentity.FramedBlockEntity;
 
 public class LiftFramedBlockEntity extends FramedBlockEntity {
 
