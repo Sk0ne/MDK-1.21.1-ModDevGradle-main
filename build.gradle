@@ -17,7 +17,6 @@ java {
 neoForge {
     version = project.neo_version
 
-    // Настройки запуска — нужны только локально, на CI работают runData и build
     runs {
         client {
             client()
@@ -42,7 +41,7 @@ repositories {
         name = "NeoForged"
         url = "https://maven.neoforged.net/releases"
     }
-    // FramedBlocks — только CurseForge, cursemaven — резолвер к нему
+    // FramedBlocks — публикуется только на CurseForge
     maven {
         name = "Curse Maven"
         url = "https://cursemaven.com"
@@ -64,8 +63,8 @@ repositories {
     }
     // Veil (транзитивная зависимость Sable)
     maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
+        name = "BlameJared"
+        url = "https://maven.blamejared.com/"
     }
     // ForgeConfigAPIPort (транзитивная зависимость Sable)
     maven {
@@ -76,12 +75,25 @@ repositories {
 }
 
 dependencies {
+    // FramedBlocks
     implementation "curse.maven:framedblocks-441647:6872949"
-    implementation "dev.ryanhcode.sable:sable-common-1.21.1:2.0.6"
+
+    // Create: slim = без вшитых зависимостей, поэтому Ponder/Flywheel/Registrate ниже
+    implementation("com.simibubi.create:create-1.21.1:6.0.10-280:slim") { transitive = false }
+    implementation "net.createmod.ponder:ponder-neoforge:1.0.82+mc1.21.1"
+    compileOnly "dev.engine-room.flywheel:flywheel-neoforge-api-1.21.1:1.0.6"
+    runtimeOnly "dev.engine-room.flywheel:flywheel-neoforge-1.21.1:1.0.6"
+    implementation "com.tterrag.registrate:Registrate:MC1.21-1.3.0+67"
+
+    // Sable: ТОЛЬКО neoforge-вариант. sable-common объявлять нельзя —
+    // оба модуля публикуются с одной capability и Gradle падает с конфликтом
     implementation "dev.ryanhcode.sable:sable-neoforge-1.21.1:2.0.6"
-    implementation "com.simibubi.create:create-1.21.1:6.0.4-84"
-    implementation "net.createmod.ponder:Ponder-NeoForge-1.21.1:1.0.30"
-    implementation "net.createmod.catnip:Catnip-NeoForge-1.21.1:0.11.32"
+}
+
+// Sable тянет ForgeConfigAPIPort 21.1.3, которой нет на maven Fuzs —
+// принудительно берём 21.1.6 (есть, под ту же 1.21.1)
+configurations.configureEach {
+    resolutionStrategy.force "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi:21.1.6"
 }
 
 tasks.withType(JavaCompile).configureEach {
