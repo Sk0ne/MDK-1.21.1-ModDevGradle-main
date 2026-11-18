@@ -1,8 +1,6 @@
 package com.sk0ne.framedlift;
 
 import com.mojang.logging.LogUtils;
-import com.sk0ne.framedlift.datagen.FramedAssetCopyProvider;
-import com.sk0ne.framedlift.datagen.LiftLangProvider;
 import com.sk0ne.framedlift.datagen.LiftLootProvider;
 import com.sk0ne.framedlift.datagen.LiftRecipeProvider;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -41,7 +39,5 @@ public class FramedLiftMod {
 
         event.getGenerator().addProvider(event.includeServer(), new LiftRecipeProvider(output));
         event.getGenerator().addProvider(event.includeServer(), new LiftLootProvider(output));
-        event.getGenerator().addProvider(event.includeClient(), new FramedAssetCopyProvider(output));
-        event.getGenerator().addProvider(event.includeClient(), new LiftLangProvider(output));
     }
 }

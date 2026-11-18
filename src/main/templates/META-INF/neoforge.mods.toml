@@ -11,7 +11,6 @@ description='''
 Рабочие фреймы: внешний вид из любого блока, лёгкость как у паруса Create.
 '''
 authors="sk0ne"
-logoFile=""
 
 [[dependencies.framedlift]]
 modId="neoforge"

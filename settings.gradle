@@ -1,29 +1,11 @@
 pluginManagement {
     repositories {
-        maven {
-            name = "NeoForged Mirror (Plugins)"
-            url = 'https://neoforged.forgecdn.net/releases'
-        }
         gradlePluginPortal()
+        maven {
+            name = 'NeoForged'
+            url = 'https://maven.neoforged.net/releases'
+        }
     }
 }
 
-dependencyResolutionManagement {
-    repositories {
-        maven {
-            name = "NeoForged Mirror (Releases)"
-            url = "https://neoforged.forgecdn.net/releases"
-        }
-        maven {
-            name = "NeoForged Mirror (Mojang Meta)"
-            url = "https://neoforged.forgecdn.net/mojang-meta"
-        }
-        maven {
-            name = "Mojang Libraries"
-            url = "https://libraries.minecraft.net/"
-        }
-        mavenCentral()
-    }
-}
-
-rootProject.name = 'framedlift'
+rootProject.name = 'FramedLift'

@@ -1,20 +1,8 @@
-# Gradle
 .gradle/
 build/
-
-# IDE
+out/
+run/
+run-data/
 .idea/
 *.iml
 .vscode/
-.settings/
-.classpath
-.project
-bin/
-
-# Run directories
-run/
-run-data/
-
-# OS
-.DS_Store
-Thumbs.db

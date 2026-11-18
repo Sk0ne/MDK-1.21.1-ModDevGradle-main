@@ -37,8 +37,7 @@ jobs:
       - name: Cache NeoForm / Minecraft assets
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.gradle/caches/neoformruntime
+          path: ~/.gradle/caches/neoformruntime
           key: neoform-${{ runner.os }}-${{ hashFiles('gradle.properties') }}
           restore-keys: |
             neoform-${{ runner.os }}-

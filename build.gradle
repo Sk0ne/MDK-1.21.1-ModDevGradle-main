@@ -17,7 +17,6 @@ java {
 neoForge {
     version = project.neo_version
 
-    // Настройки запуска — нужны только локально, на CI работают runData и build
     runs {
         client {
             client()
@@ -25,7 +24,10 @@ neoForge {
         data {
             data()
             gameDirectory = project.file('run-data')
-            programArguments.addAll '--all', '--output',
+            // Только серверные данные: рецепты, лут-таблицы.
+            // --all нельзя — ванильный ModelProvider потребует blockstates
+            // для ВСЕХ зарегистрированных блоков, включая блоки Create и FramedBlocks
+            programArguments.addAll '--server', '--output',
                     file('src/generated/resources/').absolutePath
         }
     }
