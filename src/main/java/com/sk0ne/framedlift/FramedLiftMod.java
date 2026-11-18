@@ -9,9 +9,8 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import org.slf4j.Logger;
 
 @Mod(FramedLiftMod.MOD_ID)
@@ -33,18 +32,16 @@ public class FramedLiftMod {
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(ModItems.LIFT_FRAMED_CUBE);
+            ModItems.ITEMS.getEntries().forEach(entry -> event.accept(entry.get()));
         }
     }
 
     private void gatherData(GatherDataEvent event) {
-        var gen = event.getGenerator();
-        PackOutput output = gen.getPackOutput();
-        ExistingFileHelper exHelper = event.getExistingFileHelper();
+        PackOutput output = event.getGenerator().getPackOutput();
 
-        gen.addProvider(event.includeServer(), new LiftRecipeProvider(output));
-        gen.addProvider(event.includeServer(), new LiftLootProvider(output));
-        gen.addProvider(event.includeClient(), new FramedAssetCopyProvider(output));
-        gen.addProvider(event.includeClient(), new LiftLangProvider(output));
+        event.getGenerator().addProvider(event.includeServer(), new LiftRecipeProvider(output));
+        event.getGenerator().addProvider(event.includeServer(), new LiftLootProvider(output));
+        event.getGenerator().addProvider(event.includeClient(), new FramedAssetCopyProvider(output));
+        event.getGenerator().addProvider(event.includeClient(), new LiftLangProvider(output));
     }
 }

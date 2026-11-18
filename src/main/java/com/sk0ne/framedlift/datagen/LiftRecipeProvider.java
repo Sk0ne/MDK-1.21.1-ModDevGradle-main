@@ -1,27 +1,29 @@
 package com.sk0ne.framedlift.datagen;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sk0ne.framedlift.FramedLiftMod;
 import com.sk0ne.framedlift.ModBlocks;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * Рецепты: парус Create + оригинальный framed-блок -> лифт-копия.
- * Имя оригинала получается отсечением префикса "lift_".
- */
 public class LiftRecipeProvider implements DataProvider {
 
-    public static final String SAIL_ITEM = "create:white_sail";
+    private static final ResourceLocation SAIL =
+            ResourceLocation.fromNamespaceAndPath("create", "white_sail");
+    private static final ResourceLocation FRAMED_CUBE =
+            ResourceLocation.fromNamespaceAndPath("framedblocks", "framed_cube");
 
     private final PackOutput output;
 
@@ -32,32 +34,45 @@ public class LiftRecipeProvider implements DataProvider {
     @Override
     public CompletableFuture<?> run(CachedOutput ignored) {
         try {
-            for (DeferredBlock<Block> block : ModBlocks.BLOCKS.getEntries()) {
+            Item sail = BuiltInRegistries.ITEM.get(SAIL);
+            Item framedCube = BuiltInRegistries.ITEM.get(FRAMED_CUBE);
+
+            if (sail == Items.AIR || framedCube == Items.AIR) {
+                FramedLiftMod.LOGGER.error("Не найдены ингредиенты: {} или {}. Рецепты не сгенерированы.",
+                        SAIL, FRAMED_CUBE);
+                return CompletableFuture.completedFuture(null);
+            }
+
+            for (DeferredHolder<Block, ? extends Block> block : ModBlocks.BLOCKS.getEntries()) {
                 String name = block.getId().getPath();
-                String originalId = name.replaceFirst("^lift_", "");
 
-                JsonObject root = new JsonObject();
-                root.addProperty("type", "minecraft:crafting_shapeless");
-                root.addProperty("category", "building");
+                JsonObject keySail = new JsonObject();
+                keySail.addProperty("item", "create:white_sail");
 
-                JsonArray ingredients = new JsonArray();
-                JsonObject sail = new JsonObject();
-                sail.addProperty("item", SAIL_ITEM);
-                ingredients.add(sail);
-                JsonObject base = new JsonObject();
-                base.addProperty("item", "framedblocks:" + originalId);
-                ingredients.add(base);
-                root.add("ingredients", ingredients);
+                JsonObject keyBase = new JsonObject();
+                keyBase.addProperty("item", "framedblocks:framed_cube");
+
+                JsonObject key = new JsonObject();
+                key.add("S", keySail);
+                key.add("F", keyBase);
 
                 JsonObject result = new JsonObject();
                 result.addProperty("id", FramedLiftMod.MOD_ID + ":" + name);
                 result.addProperty("count", 1);
+
+                JsonObject root = new JsonObject();
+                root.addProperty("type", "minecraft:crafting_shaped");
+                root.addProperty("category", "misc");
+                root.add("key", key);
                 root.add("result", result);
 
+                JsonArray pattern = new JsonArray();
+                pattern.add("S");
+                pattern.add("F");
+                root.add("pattern", pattern);
+
                 Path target = output.getOutputFolder(PackOutput.Target.DATA_PACK)
-                        .resolve(FramedLiftMod.MOD_ID)
-                        .resolve("recipe")
-                        .resolve(name + ".json");
+                        .resolve(FramedLiftMod.MOD_ID).resolve("recipe").resolve(name + ".json");
                 Files.createDirectories(target.getParent());
                 Files.write(target, root.toString().getBytes(StandardCharsets.UTF_8));
             }
