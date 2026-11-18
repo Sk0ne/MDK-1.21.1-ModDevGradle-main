@@ -1,109 +1,96 @@
 plugins {
-    id 'java-library'
-    id 'net.neoforged.moddev' version '2.0.138'
+    id 'net.neoforged.moddev' version '1.0.17'
 }
 
-version = '1.0.0'
-group = 'com.sk0ne.framedlift'
+version = project.mod_version
+group = project.mod_group_id
 
 base {
-    archivesName = 'framedlift'
+    archivesName = project.mod_id
 }
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+
+neoForge {
+    version = project.neo_version
+
+    // Настройки запуска — нужны только локально, на CI работают runData и build
+    runs {
+        client {
+            client()
+        }
+        data {
+            data()
+            gameDirectory = project.file('run-data')
+            programArguments.addAll '--all', '--output',
+                    file('src/generated/resources/').absolutePath
+        }
+    }
+
+    mods {
+        framedlift {
+            sourceSet(sourceSets.main)
+        }
+    }
 }
 
 repositories {
-    // FramedBlocks с CurseForge
+    maven {
+        name = "NeoForged"
+        url = "https://maven.neoforged.net/releases"
+    }
+    // FramedBlocks — только CurseForge, cursemaven — резолвер к нему
     maven {
         name = "Curse Maven"
         url = "https://cursemaven.com"
     }
-    // Create, Ponder, Flywheel
+    // Create / Ponder / Flywheel
     maven {
         name = "Create Maven"
         url = "https://maven.createmod.net"
     }
     // Registrate
     maven {
-        name = "Registrate Snapshots"
+        name = "Registrate"
         url = "https://maven.ithundxr.dev/snapshots"
     }
-    // Sable (Create: Aeronautics)
+    // Sable
     maven {
-        name = "RyanHCode Maven"
+        name = "RyanHCode"
         url = "https://maven.ryanhcode.dev/releases"
     }
+    // Veil (транзитивная зависимость Sable)
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
+    // ForgeConfigAPIPort (транзитивная зависимость Sable)
+    maven {
+        name = "Fuzs Mod Resources"
+        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+    }
     mavenCentral()
-    maven { url = "https://libraries.minecraft.net/" }
-}
-
-neoForge {
-    version = project.neo_version
-
-    runs {
-        client {
-            client()
-            gameDirectory = project.file('run')
-        }
-        server {
-            server()
-        }
-        data {
-            data()
-            gameDirectory = project.file('run-data')
-            programArguments.addAll '--all'
-            programArguments.addAll '--output', file('src/generated/resources/').absolutePath
-        }
-    }
-
-    mods {
-        framedlift {
-            sourceSet sourceSets.main
-        }
-    }
 }
 
 dependencies {
-    // FramedBlocks (NeoForge 1.21.1)
     implementation "curse.maven:framedblocks-441647:6872949"
-
-    // Create (NeoForge 1.21.1)
-    implementation("com.simibubi.create:create-${project.minecraft_version}:${project.create_version}:slim") {
-        transitive = false
-    }
-    implementation "net.createmod.ponder:ponder-neoforge:${project.ponder_version}+mc${project.minecraft_version}"
-    compileOnly "dev.engine-room.flywheel:flywheel-neoforge-api-${project.minecraft_version}:${project.flywheel_version}"
-    runtimeOnly "dev.engine-room.flywheel:flywheel-neoforge-${project.minecraft_version}:${project.flywheel_version}"
-    implementation "com.tterrag.registrate:Registrate:${project.registrate_version}"
-
-    // Sable (Create: Aeronautics)
-    implementation "dev.ryanhcode.sable:sable-common-${project.minecraft_version}:${project.sable_version}"
+    implementation "dev.ryanhcode.sable:sable-common-1.21.1:2.0.6"
+    implementation "dev.ryanhcode.sable:sable-neoforge-1.21.1:2.0.6"
+    implementation "com.simibubi.create:create-1.21.1:6.0.4-84"
+    implementation "net.createmod.ponder:Ponder-NeoForge-1.21.1:1.0.30"
+    implementation "net.createmod.catnip:Catnip-NeoForge-1.21.1:0.11.32"
 }
 
-// Шаблоны (neoforge.mods.toml) и сгенерированные данные — источники ресурсов
-sourceSets.main.resources {
-    srcDir 'src/main/templates'
-    srcDir 'src/generated/resources'
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
 }
 
-// Подстановка значений из gradle.properties в neoforge.mods.toml
 processResources {
-    def props = [
-            minecraft_version      : project.minecraft_version,
-            minecraft_version_range: project.minecraft_version_range,
-            neo_version            : project.neo_version,
-            neo_version_range      : project.neo_version_range,
-            loader_version_range   : project.loader_version_range,
-            mod_id                 : project.mod_id,
-            mod_name               : project.mod_name,
-            mod_license            : project.mod_license,
-            mod_version            : project.mod_version,
-            mod_group_id           : project.mod_group_id,
-            mod_authors            : project.mod_authors,
-            mod_description        : project.mod_description
-    ]
+    def props = [mod_version: project.mod_version]
     inputs.properties props
 
     filesMatching('META-INF/neoforge.mods.toml') {
@@ -111,6 +98,7 @@ processResources {
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
+sourceSets.main.resources {
+    srcDir 'src/main/templates'
+    srcDir 'src/generated/resources'
 }
