@@ -1,47 +1,24 @@
-modLoader = "javafml"
-loaderVersion = "[4,)"
-license = "All Rights Reserved"
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
 
 [[mods]]
-modId = "framedlift"
-version = "1.0.0"
-displayName = "FramedLift"
-authors = "Sk0ne"
-description = '''
-Аэродинамические копии блоков FramedBlocks для Create: Aeronautics.
-'''
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+description='''${mod_description}'''
 
-[[dependencies.framedlift]]
-modId = "neoforge"
-type = "required"
-versionRange = "[21.1.0,)"
-ordering = "NONE"
-side = "BOTH"
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version_range}"
+    ordering="NONE"
+    side="BOTH"
 
-[[dependencies.framedlift]]
-modId = "minecraft"
-type = "required"
-versionRange = "[1.21.1,1.22)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.framedlift]]
-modId = "framedblocks"
-type = "required"
-versionRange = "[10.0,)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.framedlift]]
-modId = "sable"
-type = "required"
-versionRange = "[1.0,)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.framedlift]]
-modId = "create"
-type = "required"
-versionRange = "[0.5.1,)"
-ordering = "NONE"
-side = "BOTH"
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"

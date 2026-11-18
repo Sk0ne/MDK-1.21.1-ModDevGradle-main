@@ -6,12 +6,16 @@ plugins {
 version = '1.0.0'
 group = 'com.sk0ne.framedlift'
 
+base {
+    archivesName = 'framedlift'
+}
+
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
 repositories {
-    // Curse Maven — для FramedBlocks
+    // FramedBlocks с CurseForge
     maven {
         name = "Curse Maven"
         url = "https://cursemaven.com"
@@ -26,12 +30,11 @@ repositories {
         name = "Registrate Snapshots"
         url = "https://maven.ithundxr.dev/snapshots"
     }
-    // Sable (Create: Aeronautics) — официальный Maven
+    // Sable (Create: Aeronautics)
     maven {
         name = "RyanHCode Maven"
         url = "https://maven.ryanhcode.dev/releases"
     }
-    // Стандартные репозитории
     mavenCentral()
     maven { url = "https://libraries.minecraft.net/" }
 }
@@ -50,6 +53,8 @@ neoForge {
         data {
             data()
             gameDirectory = project.file('run-data')
+            programArguments.addAll '--all'
+            programArguments.addAll '--output', file('src/generated/resources/').absolutePath
         }
     }
 
@@ -61,10 +66,10 @@ neoForge {
 }
 
 dependencies {
-    // FramedBlocks (NeoForge 1.21.1) — координаты с CurseForge
+    // FramedBlocks (NeoForge 1.21.1)
     implementation "curse.maven:framedblocks-441647:6872949"
 
-    // Create (NeoForge 1.21.1) — версия с build-номером из Maven
+    // Create (NeoForge 1.21.1)
     implementation("com.simibubi.create:create-${project.minecraft_version}:${project.create_version}:slim") {
         transitive = false
     }
@@ -73,6 +78,39 @@ dependencies {
     runtimeOnly "dev.engine-room.flywheel:flywheel-neoforge-${project.minecraft_version}:${project.flywheel_version}"
     implementation "com.tterrag.registrate:Registrate:${project.registrate_version}"
 
-    // Sable (Create: Aeronautics) — версия 2.0.x для 1.21.1
+    // Sable (Create: Aeronautics)
     implementation "dev.ryanhcode.sable:sable-common-${project.minecraft_version}:${project.sable_version}"
+}
+
+// Шаблоны (neoforge.mods.toml) и сгенерированные данные — источники ресурсов
+sourceSets.main.resources {
+    srcDir 'src/main/templates'
+    srcDir 'src/generated/resources'
+}
+
+// Подстановка значений из gradle.properties в neoforge.mods.toml
+processResources {
+    def props = [
+            minecraft_version      : project.minecraft_version,
+            minecraft_version_range: project.minecraft_version_range,
+            neo_version            : project.neo_version,
+            neo_version_range      : project.neo_version_range,
+            loader_version_range   : project.loader_version_range,
+            mod_id                 : project.mod_id,
+            mod_name               : project.mod_name,
+            mod_license            : project.mod_license,
+            mod_version            : project.mod_version,
+            mod_group_id           : project.mod_group_id,
+            mod_authors            : project.mod_authors,
+            mod_description        : project.mod_description
+    ]
+    inputs.properties props
+
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand props
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }
